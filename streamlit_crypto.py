@@ -73,16 +73,22 @@ class KeywordScraper:
                 header = 'Could not retreive headline'
 
             text_news = ""
-            i = 0
-
+            #i = 0
+            del parapraphs[0:1]
+            if len(parapraphs)>15:
+                del parapraphs[12:]
+                n_sentence = 3
+            else:
+                del parapraphs[9:]
+                n_sentence = 2
             for p in parapraphs:
-                if i<1 or len(parapraphs) - i < 12:
-                    i += 1
-                    continue
+                #if i<1 or len(parapraphs) - i < 12:
+                    #i += 1
+                    #continue
                 if p:
                     text_news = p.getText().strip() + text_news
-                i += 1
-            result = model(text_news, num_sentences=3)
+                #i += 1
+            result = model(text_news, num_sentences=n_sentence)
             full = ''.join(result)
             final_key = source + ": " + header
             output[final_key] = full
