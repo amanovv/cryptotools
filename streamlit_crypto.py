@@ -44,7 +44,7 @@ class KeywordScraper:
             #print(list_of_keywords)
             for i in list_of_keywords:
                 self.links_scraped.append(i['href'])
-        model = Summarizer()
+        model = define_model()
         output = {}
         n = 0
         for link in self.links_scraped:
@@ -90,6 +90,11 @@ class KeywordScraper:
             if n>10:
                 break
         return output
+
+@st.experimental_singleton
+def define_model():
+    model = Summarizer()
+    return model
 
 if __name__ == "__main__":
     main()
