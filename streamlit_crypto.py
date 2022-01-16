@@ -93,7 +93,7 @@ class KeywordScraper:
             final_key = source + ": " + header
             output[final_key] = full
             n += 1
-            if n>10:
+            if n>8:
                 break
         return output
 
