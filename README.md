@@ -11,6 +11,7 @@ Even though you can use the tool with above link, it might be convenient to run 
 
 So, to run it locally:
 
+- Clone this repository
 - Create virtual env
 - Install pytorch for your machine
 - `pip install bs4 bert-extractive-summarizer streamlit requests`
