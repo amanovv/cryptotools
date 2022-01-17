@@ -9,14 +9,14 @@ def main():
     st.set_page_config(layout="wide")
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
-    model = define_model()
+
     keyword_input = st.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         links = links[0:8]
         with multiprocessing.Pool() as pool:
-            output = pool.starmap(scrape_content, zip(links, itertools.repeat(model)))
+            output = pool.starmap(scrape_content, links)
             st.write(output)
 
 
@@ -64,8 +64,9 @@ def scrape_content(link, model):
             with p.getText().strip() as t:
                 text_news = t + text_news
         # i += 1
-    with model(text_news, num_sentences=n_sentence) as result:
-        full = ''.join(result)
+    with define_model() as model:
+        result = model(text_news, num_sentences=n_sentence)
+    full = ''.join(result)
     final_key = source + ": " + header
     output[final_key] = full
     return output
