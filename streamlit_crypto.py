@@ -14,8 +14,8 @@ def scrape_content(link):
     search_link = link.split("./")
     full_link = "https://news.google.com/" + search_link[1]
 
-    with requests.get(full_link, headers=headers).text as content:
-        soup = BeautifulSoup(content, 'html.parser')
+    content = requests.get(full_link, headers=headers).text
+    soup = BeautifulSoup(content, 'html.parser')
     news_body = soup.find("body")
     link_div = news_body.find("div", {"class": "m2L3rb eLNT1d"})
     link_final = link_div.find("a")['href']
@@ -25,8 +25,8 @@ def scrape_content(link):
     else:
         source = source_init[1].split(".")[0]
 
-    with requests.get(link_final, headers=headers).text as content:
-        soup = BeautifulSoup(content, 'html.parser')
+    content = requests.get(link_final, headers=headers).text
+    soup = BeautifulSoup(content, 'html.parser')
     news_body = soup.find("body")
     parapraphs = news_body.find_all('p')
     if news_body.find('h1'):
@@ -104,6 +104,8 @@ if __name__ == "__main__":
         links = s.scrape_links()
         pool = multiprocessing.Pool()
         output = pool.map(scrape_content, links)
+        pool.close()
+        pool.join()
         st.write(output)
     
 
