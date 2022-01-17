@@ -84,13 +84,8 @@ class KeywordScraper:
         for col in news_cols:
             list_of_keywords = col.find_all("a", {"class": "VDXfz"})
             #print(list_of_keywords)
-            n = 0
             for i in list_of_keywords:
                 self.links_scraped.append(i['href'])
-                n += 1
-                if n>5:
-                    break
-
 
         return self.links_scraped
 
@@ -105,10 +100,12 @@ if __name__ == "__main__":
     st.subheader("Just provide the keyword below and see the magic lol")
 
     keyword_input = st.text_input("Type the keyword here")
-    s = KeywordScraper(keyword_input)
-    links = s.scrape_links()
-    with multiprocessing.Pool() as pool:
-        output = pool.map(scrape_content, links)
-        st.write(output)
+    if keyword_input:
+        s = KeywordScraper(keyword_input)
+        links = s.scrape_links()
+        print(links)
+        with multiprocessing.Pool() as pool:
+            output = pool.map(scrape_content, links)
+            st.write(output)
     
 
