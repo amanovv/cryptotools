@@ -102,11 +102,13 @@ if __name__ == "__main__":
         links = links[0:8]
         pool = multiprocessing.Pool()
         output_texts = pool.map(scrape_content, links)
-        for i in output_texts:
-            for key, value in i.items():
-                result = model(value, num_sentences=n_sentence)
-                full = ''.join(result)
-                output[key] = full
+        results = pool.map(partial(model, num_sentences=n_sentence), output_texts.values())
+        i = 0
+        for key in output_texts.keys():
+            result = results[i]
+            full = ''.join(result)
+            output[key] = full
+            i += 1
         pool.close()
         pool.join()
         st.write(output)
