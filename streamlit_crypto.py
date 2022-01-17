@@ -94,7 +94,7 @@ if __name__ == "__main__":
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
     model = define_model()
-
+    n_sentence = 3
     col1, col2 = st.columns(2)
     number_of_news = col1.number_input("How many news you want?", min_value = 5, max_value = 20)
     keyword_input = col2.text_input("Type the keyword here")
