@@ -100,6 +100,7 @@ if __name__ == "__main__":
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
+        links = links[:10]
         p = multiprocessing.Pool()
         scrape = partial(scrape_content, model=model)
         output = p.map(scrape, links)
