@@ -105,16 +105,16 @@ if __name__ == "__main__":
         pool = multiprocessing.Pool()
         n = 1
         output_texts = pool.imap(scrape_content, links)
-        output = {}
-        with output_texts as e:
-            for key,value in e.items():
+        for i in output_texts:
+            output = {}
+            for key,value in i.items():
                 result = model(value, num_sentences=n_sentence)
                 full = ''.join(result)
                 output[key] = full
                 st.write(output)
-                n += 1
-                if n>number_of_news:
-                    break
+            n += 1
+            if n>number_of_news:
+                break
 
         pool.close()
     
