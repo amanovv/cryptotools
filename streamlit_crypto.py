@@ -88,7 +88,6 @@ class KeywordScraper:
 
         return self.links_scraped
 
-@st.experimental_singleton
 def define_model():
     model = Summarizer()
     return model
@@ -102,6 +101,7 @@ if __name__ == "__main__":
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
+        links = links[0:8]
         pool = multiprocessing.Pool()
         output = pool.map(scrape_content, links)
         pool.close()
