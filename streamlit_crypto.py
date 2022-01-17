@@ -3,7 +3,24 @@ import requests
 from summarizer import Summarizer
 import streamlit as st
 import multiprocessing
-from functools import partial
+import itertools
+
+def main():
+    st.set_page_config(layout="wide")
+    st.title("Latest news summarizer based on given keywords")
+    st.subheader("Just provide the keyword below and see the magic lol")
+    model = define_model()
+    keyword_input = st.text_input("Type the keyword here")
+    if keyword_input:
+        s = KeywordScraper(keyword_input)
+        links = s.scrape_links()
+        links = links[:10]
+        pool = multiprocessing.Pool()
+        output = pool.starmap(scrape_content, zip(links, itertools.repeat(model)))
+        pool.close()
+        pool.join()
+        st.write(output)
+
 
 def scrape_content(link, model):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'}
@@ -90,20 +107,6 @@ class KeywordScraper:
 def define_model():
     model = Summarizer()
     return model
-
-def main():
-    st.set_page_config(layout="wide")
-    st.title("Latest news summarizer based on given keywords")
-    st.subheader("Just provide the keyword below and see the magic lol")
-    model = define_model()
-    keyword_input = st.text_input("Type the keyword here")
-    if keyword_input:
-        s = KeywordScraper(keyword_input)
-        links = s.scrape_links()
-        links = links[:10]
-        with multiprocessing.Pool() as pool:
-            output = pool.starmap(scrape_content, zip(links,model))
-        st.write(output)
 
 if __name__ == "__main__":
     main()
