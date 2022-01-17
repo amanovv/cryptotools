@@ -29,8 +29,8 @@ def scrape_content(link, model):
 
     with requests.get(full_link, headers=headers).text as content:
         soup = BeautifulSoup(content, 'html.parser')
-    news_body = soup.find("body")
-    link_div = news_body.find("div", {"class": "m2L3rb eLNT1d"})
+    with soup.find("body") as news_body:
+        link_div = news_body.find("div", {"class": "m2L3rb eLNT1d"})
     link_final = link_div.find("a")['href']
     source_init = link_final.split("https://www.")
     if len(source_init) == 1:
@@ -40,8 +40,8 @@ def scrape_content(link, model):
 
     with requests.get(link_final, headers=headers).text as content:
         soup = BeautifulSoup(content, 'html.parser')
-    news_body = soup.find("body")
-    parapraphs = news_body.find_all('p')
+    with soup.find("body") as news_body:
+        parapraphs = news_body.find_all('p')
     if news_body.find('h1'):
         header = news_body.find('h1').getText().strip()
     else:
@@ -64,8 +64,8 @@ def scrape_content(link, model):
             with p.getText().strip() as t:
                 text_news = t + text_news
         # i += 1
-    result = model(text_news, num_sentences=n_sentence)
-    full = ''.join(result)
+    with model(text_news, num_sentences=n_sentence) as result:
+        full = ''.join(result)
     final_key = source + ": " + header
     output[final_key] = full
     return output
