@@ -91,7 +91,7 @@ def define_model():
     model = Summarizer()
     return model
 
-if __name__ == "__main__":
+def main():
     st.set_page_config(layout="wide")
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
@@ -101,8 +101,12 @@ if __name__ == "__main__":
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         links = links[:10]
-        p = multiprocessing.Pool()
-        scrape = partial(scrape_content, model=model)
-        output = p.map(scrape, links)
-        st.write(output)
+        with multiprocessing.Pool() as pool:
+            scrape = partial(scrape_content, model=model)
+            output = pool.map(scrape, links)
+            st.write(output)
+
+if __name__ == "__main__":
+    main()
+    
 
