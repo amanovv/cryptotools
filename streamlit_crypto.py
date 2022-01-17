@@ -103,9 +103,8 @@ if __name__ == "__main__":
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
-        print(links)
-        with multiprocessing.Pool() as pool:
-            output = pool.map(scrape_content, links)
-            st.write(output)
+        pool = multiprocessing.Pool()
+        output = pool.map(scrape_content, links)
+        st.write(output)
     
 
