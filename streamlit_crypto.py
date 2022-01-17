@@ -15,7 +15,7 @@ def main():
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         with multiprocessing.Pool() as pool:
-            output = pool.starmap(scrape_content, links)
+            output = pool.map(scrape_content, links)
             st.write(output)
 
 
