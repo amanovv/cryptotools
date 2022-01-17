@@ -4,6 +4,7 @@ from summarizer import Summarizer
 import streamlit as st
 import multiprocessing
 import itertools
+from functools import partial
 
 
 
