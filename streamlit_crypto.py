@@ -102,7 +102,7 @@ def main():
         links = s.scrape_links()
         links = links[:10]
         with multiprocessing.Pool() as pool:
-            output = pool.map(partial(scrape_content, model=model), links)
+            output = pool.starmap(scrape_content, zip(links,model))
         st.write(output)
 
 if __name__ == "__main__":
