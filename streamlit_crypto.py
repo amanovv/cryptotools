@@ -39,10 +39,8 @@ def scrape_content(link):
     del parapraphs[0:1]
     if len(parapraphs) > 15:
         del parapraphs[12:]
-        n_sentence = 3
     else:
         del parapraphs[9:]
-        n_sentence = 2
     for p in parapraphs:
         # if i<1 or len(parapraphs) - i < 12:
         # i += 1
@@ -96,6 +94,7 @@ if __name__ == "__main__":
     st.subheader("Just provide the keyword below and see the magic lol")
     model = define_model()
     output = {}
+    n_sentence = 3
     keyword_input = st.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
