@@ -14,12 +14,10 @@ def main():
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
-        links = links[:10]
-        pool = multiprocessing.Pool()
-        output = pool.starmap(scrape_content, zip(links, itertools.repeat(model)))
-        pool.close()
-        pool.join()
-        st.write(output)
+        links = links[0:8]
+        with multiprocessing.Pool() as pool:
+            output = pool.starmap(scrape_content, zip(links, itertools.repeat(model)))
+            st.write(output)
 
 
 def scrape_content(link, model):
