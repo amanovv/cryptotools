@@ -50,11 +50,8 @@ def scrape_content(link):
         if p:
             text_news = p.getText().strip() + text_news
         # i += 1
-    model = define_model()
-    result = model(text_news, num_sentences=n_sentence)
-    full = ''.join(result)
     final_key = source + ": " + header
-    output[final_key] = full
+    output[final_key] = text_news
     return output
 
 def add_keywords(keywords):
@@ -88,6 +85,7 @@ class KeywordScraper:
 
         return self.links_scraped
 
+@st.experimental_singleton
 def define_model():
     model = Summarizer()
     return model
@@ -96,14 +94,20 @@ if __name__ == "__main__":
     st.set_page_config(layout="wide")
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
-
+    model = define_model()
+    output = {}
     keyword_input = st.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         links = links[0:8]
         pool = multiprocessing.Pool()
-        output = pool.map(scrape_content, links)
+        output_texts = pool.map(scrape_content, links)
+        for i in output_texts:
+            for key, value in i.items():
+                result = model(value, num_sentences=n_sentence)
+                full = ''.join(result)
+                output[key] = full
         pool.close()
         pool.join()
         st.write(output)
