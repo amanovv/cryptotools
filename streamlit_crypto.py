@@ -107,6 +107,9 @@ if __name__ == "__main__":
         for e in output_texts:
             for i in e.values():
                 texts.append(i)
+        pool.close()
+        pool.join()
+        pool = multiprocessing.Pool()
         results = pool.map(partial(model, num_sentences=n_sentence), texts)
         i = 0
         for key in output_texts.keys():
