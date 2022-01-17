@@ -105,7 +105,7 @@ if __name__ == "__main__":
         output_texts = pool.map(scrape_content, links)
         texts = []
         for e in output_texts:
-            texts.append(e.values())
+            texts.append(e.values()[0])
         results = pool.map(partial(model, num_sentences=n_sentence), texts)
         i = 0
         for key in output_texts.keys():
