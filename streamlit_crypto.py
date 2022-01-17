@@ -106,7 +106,7 @@ if __name__ == "__main__":
         n = 1
         output_texts = pool.imap(scrape_content, links)
         output = {}
-        with i in output_texts as e:
+        with output_texts as e:
             for key,value in e.items():
                 result = model(value, num_sentences=n_sentence)
                 full = ''.join(result)
