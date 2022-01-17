@@ -95,13 +95,16 @@ if __name__ == "__main__":
     st.subheader("Just provide the keyword below and see the magic lol")
     model = define_model()
     n_sentence = 3
-    keyword_input = st.text_input("Type the keyword here")
+    col1, col2 = st.columns(2)
+    number_of_news = col1.number_input("How many news you want?")
+    keyword_input = col2.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
-        #links = links[0:8]
+        #links = links[0:15]
         pool = multiprocessing.Pool()
-        output_texts = pool.map(scrape_content, links)
+        output_texts = pool.imap(scrape_content, links)
+        n = 0
         for i in output_texts:
             output = {}
             for key,value in i.items():
@@ -109,6 +112,9 @@ if __name__ == "__main__":
                 full = ''.join(result)
                 output[key] = full
                 st.write(output)
+            n += 1
+            if n>number_of_news:
+                break
 
         pool.close()
     
