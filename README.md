@@ -3,7 +3,7 @@ These are group of tools for crypto trading that I usually use for my trading, m
 
 ### 1. Latest news summarizer based on keyword.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://ec2-54-172-234-158.compute-1.amazonaws.com:8501)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://ec2-35-168-161-152.compute-1.amazonaws.com:8501)
 
 This tool is mainly to have short summarized look at news about cryptocurrency since sometimes news about crypto can be explosive. Or just use it anyway you want, because it works with any keyword not necessarily for crypto.
 
