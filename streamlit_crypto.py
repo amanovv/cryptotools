@@ -3,11 +3,11 @@ import requests
 from summarizer import Summarizer
 import streamlit as st
 import multiprocessing
+from functools import partial
 
-def scrape_content(link):
+def scrape_content(link, model):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'}
     output = {}
-    model = define_model()
     # for link in self.links_scraped:
     search_link = link.split("./")
     full_link = "https://news.google.com/" + search_link[1]
@@ -95,11 +95,13 @@ if __name__ == "__main__":
     st.set_page_config(layout="wide")
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
+    model = define_model()
     keyword_input = st.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         p = multiprocessing.Pool()
-        output = p.map(scrape_content, links)
+        scrape = partial(scrape_content, model=model)
+        output = p.map(scrape, links)
         st.write(output)
 
