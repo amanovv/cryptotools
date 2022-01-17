@@ -96,7 +96,7 @@ if __name__ == "__main__":
     model = define_model()
     n_sentence = 3
     col1, col2 = st.columns(2)
-    number_of_news = col1.number_input("How many news you want?", min_value = 5, max_value = 20, value = 'int')
+    number_of_news = col1.number_input("How many news you want?", min_value = 5, max_value = 20)
     keyword_input = col2.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
