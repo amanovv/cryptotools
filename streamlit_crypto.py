@@ -27,11 +27,10 @@ def scrape_content(link, model):
     search_link = link.split("./")
     full_link = "https://news.google.com/" + search_link[1]
 
-    content = requests.get(full_link, headers=headers).text
-    soup = BeautifulSoup(content, 'html.parser')
-
-    news_body = soup.find("body")
-    link_div = news_body.find("div", {"class": "m2L3rb eLNT1d"})
+    with requests.get(full_link, headers=headers).text as content:
+        soup = BeautifulSoup(content, 'html.parser')
+        news_body = soup.find("body")
+        link_div = news_body.find("div", {"class": "m2L3rb eLNT1d"})
     link_final = link_div.find("a")['href']
     source_init = link_final.split("https://www.")
     if len(source_init) == 1:
@@ -39,10 +38,10 @@ def scrape_content(link, model):
     else:
         source = source_init[1].split(".")[0]
 
-    content = requests.get(link_final, headers=headers).text
-    soup = BeautifulSoup(content, 'html.parser')
-    news_body = soup.find("body")
-    parapraphs = news_body.find_all('p')
+    with requests.get(link_final, headers=headers).text as content:
+        soup = BeautifulSoup(content, 'html.parser')
+        news_body = soup.find("body")
+        parapraphs = news_body.find_all('p')
     if news_body.find('h1'):
         header = news_body.find('h1').getText().strip()
     else:
@@ -62,7 +61,8 @@ def scrape_content(link, model):
         # i += 1
         # continue
         if p:
-            text_news = p.getText().strip() + text_news
+            with p.getText().strip() as t:
+                text_news = t + text_news
         # i += 1
     result = model(text_news, num_sentences=n_sentence)
     full = ''.join(result)
