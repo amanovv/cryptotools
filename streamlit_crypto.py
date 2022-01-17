@@ -51,8 +51,8 @@ def scrape_content(link):
             with p.getText().strip() as t:
                 text_news = t + text_news
         # i += 1
-    with define_model() as model:
-        result = model(text_news, num_sentences=n_sentence)
+    model = define_model()
+    result = model(text_news, num_sentences=n_sentence)
     full = ''.join(result)
     final_key = source + ": " + header
     output[final_key] = full
