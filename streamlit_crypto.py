@@ -101,9 +101,9 @@ def main():
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
         links = links[:10]
-    with multiprocessing.Pool() as pool:
-        output = pool.map(partial(scrape_content, model=model), links)
-    st.write(output)
+        with multiprocessing.Pool() as pool:
+            output = pool.map(partial(scrape_content, model=model), links)
+        st.write(output)
 
 if __name__ == "__main__":
     main()
