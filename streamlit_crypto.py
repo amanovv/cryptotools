@@ -104,7 +104,7 @@ if __name__ == "__main__":
         #links = links[0:15]
         pool = multiprocessing.Pool()
         output_texts = pool.imap(scrape_content, links)
-        n = 0
+        n = 1
         for i in output_texts:
             output = {}
             for key,value in i.items():
