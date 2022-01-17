@@ -94,20 +94,22 @@ if __name__ == "__main__":
     st.title("Latest news summarizer based on given keywords")
     st.subheader("Just provide the keyword below and see the magic lol")
     model = define_model()
-    output = {}
     n_sentence = 3
     keyword_input = st.text_input("Type the keyword here")
     if keyword_input:
         s = KeywordScraper(keyword_input)
         links = s.scrape_links()
-        links = links[0:8]
+        #links = links[0:8]
         pool = multiprocessing.Pool()
         output_texts = pool.map(scrape_content, links)
         for i in output_texts:
+            output = {}
             for key,value in i.items():
                 result = model(value, num_sentences=n_sentence)
                 full = ''.join(result)
                 output[key] = full
-        st.write(output)
+                st.write(output)
+
+        pool.close()
     
 
