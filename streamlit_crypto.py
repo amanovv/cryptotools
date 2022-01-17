@@ -5,18 +5,6 @@ import streamlit as st
 import multiprocessing
 import itertools
 
-def main():
-    st.set_page_config(layout="wide")
-    st.title("Latest news summarizer based on given keywords")
-    st.subheader("Just provide the keyword below and see the magic lol")
-
-    keyword_input = st.text_input("Type the keyword here")
-    if keyword_input:
-        s = KeywordScraper(keyword_input)
-        links = s.scrape_links()
-        with multiprocessing.Pool() as pool:
-            output = pool.map(scrape_content, links)
-            st.write(output)
 
 
 def scrape_content(link):
@@ -112,6 +100,15 @@ def define_model():
     return model
 
 if __name__ == "__main__":
-    main()
+    st.set_page_config(layout="wide")
+    st.title("Latest news summarizer based on given keywords")
+    st.subheader("Just provide the keyword below and see the magic lol")
+
+    keyword_input = st.text_input("Type the keyword here")
+    s = KeywordScraper(keyword_input)
+    links = s.scrape_links()
+    with multiprocessing.Pool() as pool:
+        output = pool.map(scrape_content, links)
+        st.write(output)
     
 
